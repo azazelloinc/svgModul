@@ -1,8 +1,16 @@
 {
-  "name" : "MySVG",
+  "name" : "SVGmodul",
   "version" : "0.0.1",
+  "description"  : "SVG normalization from imported SVG-image",
+  "homepage"     : "https://github.com/azazelloinc/svgModul.git",
+  "author"       : "Azat Z Arslanov",
+  "repository"   : { "type": "git", "url": "git://github.com/azazelloinc/svgModul.git" },
+  "main"         : "./index.js",
   "dependencies" : {
-    "lodash"        : "~ 2.2.1",
-    "xmldom"        : "~ 0.1.16"
-  }
+                    "lodash"        : "~ 2.2.1",
+                    "xmldom"        : "~ 0.1.16"
+                   },
+  "devDependencies" : {
+                        "jshint"  : "*"
+                      }
 }
