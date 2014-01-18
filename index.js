@@ -1,13 +1,70 @@
 'use strict';
 
+//var server = require("./server");
+//server.start();
+
 //tmpSvg('7997');
+//console.log(process.argv);
+
+var fs = require('fs');
+var svgconv = require("./svgconvert");
+
+var args = process.argv.slice(2);
+console.log('args: ', args);
 
 function tmpSvg( svgSource ) {
   console.log(svgSource);
 }
 
-var svgconv = require("./svgconvert");
-var xml01 = '<?xml version="1.0" ?><!DOCTYPE svg  PUBLIC "-//W3C//DTD SVG 1.1//EN"  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg enable-background="new 0 0 96 96" height="96px" id="expand" version="1.1" viewBox="0 0 96 96" width="96px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"><path d="M80,4H68c-2.209,0-4,1.791-4,4s1.791,4,4,4h12c2.21,0,4,1.79,4,4v12c0,2.209,1.791,4,4,4s4-1.791,4-4V16  C92,9.373,86.627,4,80,4z"/><path d="M28,4H16C9.373,4,4,9.373,4,16v12c0,2.209,1.791,4,4,4s4-1.791,4-4V16c0-2.21,1.79-4,4-4h12c2.209,0,4-1.791,4-4  S30.209,4,28,4z"/><path d="M88,64c-2.209,0-4,1.791-4,4v12c0,2.21-1.79,4-4,4H68c-2.209,0-4,1.791-4,4s1.791,4,4,4h12c6.627,0,12-5.373,12-12V68  C92,65.791,90.209,64,88,64z"/><path d="M28,84H16c-2.21,0-4-1.79-4-4V68c0-2.209-1.791-4-4-4s-4,1.791-4,4v12c0,6.627,5.373,12,12,12h12c2.209,0,4-1.791,4-4  S30.209,84,28,84z"/></svg>';
-var xml02 = '<?xml version="1.0" ?><svg height="48" id="svg2" version="1.1" width="48" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg"><defs id="defs3"><clipPath id="clipPath2998"><path d="M 0,0 0,36 36,36 36,0 0,0" id="path3000"/></clipPath></defs><g id="layer1" transform="translate(0,-1004.3622)"><g id="g2992" transform="matrix(1.3333333,0,0,-1.3333333,6e-7,1052.3622)"><g id="g2994"><g clip-path="url(#clipPath2998)" id="g2996"><g id="g3002"><g id="g3004"><g id="g3006"><path d="m 18.153,20.49 -0.49,0.429 c -0.999,1.06 -0.98,2.728 0.054,3.766 l 9.673,9.673 c 1.053,1.053 2.761,1.053 3.817,-0.004 l 3.151,-3.15 c 1.053,-1.053 1.053,-2.758 0,-3.814 l -9.676,-9.673 c -1.035,-1.034 -2.703,-1.053 -3.763,-0.054 l -0.858,0.854" id="path3008" style="fill:none;stroke:#191919;stroke-width:1.70500004;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-opacity:1;stroke-dasharray:none"/></g></g><g id="g3010"><g id="g3012"><path d="m 17.847,15.51 0.49,-0.429 c 0.999,-1.06 0.98,-2.728 -0.054,-3.766 L 8.61,1.642 C 7.557,0.589 5.849,0.589 4.793,1.646 l -3.151,3.15 c -1.053,1.053 -1.053,2.758 0,3.814 l 9.676,9.673 c 1.035,1.034 2.703,1.053 3.763,0.054 l 0.858,-0.854" id="path3014" style="fill:none;stroke:#000000;stroke-width:1.70500004;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-opacity:1;stroke-dasharray:none"/></g></g><g id="g3016"><g id="g3018"><path d="M 24.432,27.094 8.937,11.599 C 8.25,10.913 8.25,9.795 8.937,9.109 L 9.105,8.941 c 0.686,-0.687 1.804,-0.687 2.49,0 L 27.09,24.436 c 0.687,0.686 0.687,1.804 0,2.49 l -0.168,0.168 c -0.686,0.687 -1.804,0.687 -2.49,0 z" id="path3020" style="fill:none;stroke:#191919;stroke-width:1.80200005;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;stroke-dasharray:none"/></g></g></g></g></g></g></g></svg>';
-var xml03 = '<?xml version="1.0" ?><svg height="50px" version="1.1" viewBox="0 0 50 50" width="50px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><description/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#000000" id="RSS"><path d="M50,25 C50,11.1928806 38.8071194,0 25,0 C11.1928806,0 0,11.1928806 0,25 C0,38.8071194 11.1928806,50 25,50 C38.8071194,50 50,38.8071194 50,25 Z M47,25 C47,12.8497349 37.1502651,3 25,3 C12.8497349,3 3,12.8497349 3,25 C3,37.1502651 12.8497349,47 25,47 C37.1502651,47 47,37.1502651 47,25 Z M15.9310647,31.9383671 C15.9310647,33.4789156 17.124854,34.722384 18.5941945,34.722384 C20.0692323,34.722384 21.2608163,33.4789799 21.2608775,31.9383671 C21.2608775,30.4059173 20.0692936,29.1484369 18.5941945,29.1484369 C17.124854,29.1484369 15.9310647,30.4059173 15.9310647,31.9383671 Z M15.9310647,24.8801766 C18.4283003,24.8801766 20.7764883,25.9045951 22.5442915,27.7604778 C24.3102568,29.6124397 25.2845487,32.0872928 25.2845487,34.7164707 L29.1366284,34.7164064 C29.1366284,27.0736971 23.2104415,20.8569335 15.9310647,20.8569335 L15.9310647,24.8801766 Z M15.9310647,17.7475554 C24.8358746,17.7475554 32.0848048,25.3602482 32.0848048,34.7142853 L35.9310647,34.7144139 C35.9310647,23.1426889 26.9580715,13.722384 15.9310647,13.722384 L15.9310647,17.7475554 Z M15.9310647,17.7475554" id="Oval-1"/></g></g></svg>';
-svgconv.normalizeSvg(xml01);
+var namePrefix = 'result-';
+var storagePath = 'svgfiles/';
+var path = storagePath + args[0];
+console.log('path: ', path);
+
+
+  fs.readdir(storagePath, function(err, files) {
+    if (err) {
+      console.log('Cannot read ' + storagePath + ' directory.');
+      return;
+    }
+    
+    if (args[0] == undefined) {
+      for (var i = 0; i < files.length; i++) {
+        console.log(i, files[i]);
+      }
+        
+    } else if (args[0] < files.length) {
+      fs.readFile(storagePath + files[args[0]], {encoding: 'utf8'}, function (errIn, dataIn) {
+        var svgResult = svgconv.normalizeSvg(dataIn);
+        console.log('Res-file:', storagePath + namePrefix + files[args[0]] );
+        fs.writeFile(storagePath + namePrefix + files[args[0]], 
+          '<svg version="1.1" viewBox="0 0 '+svgResult.width+' '+svgResult.height+'"><path d="'+svgResult.path+'"/></svg>', 
+          function(errOut) {
+            if(errOut) {
+              console.log(errOut);
+            } else {
+              console.log("Файл svg сохранен.");
+            }
+        });
+        
+        fs.writeFile(storagePath + namePrefix + files[args[0]] + '_res', 
+          'path:'+svgResult.path+'\n\ '+
+          'x:'+svgResult.x+'\n\ '+
+          'y:'+svgResult.y+'\n\ '+
+          'width:'+svgResult.width+'\n\ '+
+          'height:'+svgResult.height+'\n\ '+
+          'ok:'+svgResult.ok+'\n\ '+
+          'missedTags:'+svgResult.missedTags+'\n\ '+
+          'missedAttrs:'+svgResult.missedAttrs+'\n\ ',
+          function(errOutRes) {
+            if(errOutRes) {
+              console.log(errOutRes);
+            } else {
+              console.log("Файл результов сохранен.");
+            }
+        });
+        
+      });
+    }
+    
+  });

@@ -6,6 +6,8 @@ var _       = require('lodash');
 var XMLDOMParser = require('xmldom').DOMParser;
 
 var result = {};
+result.missedTags = [];
+result.missedAttrs = [];
 
 //  Entry Point - pass the original SVG, get "normalized"
 //
@@ -26,7 +28,7 @@ exports.normalizeSvg = function ( svgSource ) {
 
   var svgTag = xmlDoc.getElementsByTagName('svg')[0];
   
-  result.path = getCompaundPath(svgTag);
+  result.path = getCompoundPath(svgTag);
 
   // getting viewBox values array
   var viewBox = _.map(
@@ -49,19 +51,25 @@ exports.normalizeSvg = function ( svgSource ) {
   return result;
 }
 
-// Check the influence of the tag on the result of imports, and populating arrays missedTags, missedAttrs
-function analizeTag( tag ) {
-//  console.log(tag.tagName);
-  switch (tag.tagName) {
+// recursive function to build the resulting path
+//
+// node: {...} // current dom-node
+// path: ""
+function getCompoundPath( node ) {
+  //console.log("<node.tagName:"+node.tagName+">");
+  var path = "";
+  
+  // Check the influence of the tag on the result of imports, and populating arrays missedTags, missedAttrs
+  switch (node.tagName) {
     case "rect":
     //...
     case "circle":
       result.ok = false;
-      result.missedTags.push(tag.tagName);
+      result.missedTags.push(node.tagName);
       break;
     case "path":
       result.ok = false;
-      var attrs = tag.attributes;
+      var attrs = node.attributes;
       _.forEach(attrs, function(attr) {
 //        console.log(attr.name);
         switch (attr.name) {
@@ -75,22 +83,13 @@ function analizeTag( tag ) {
       });
       break;
   }
-}
-
-// recursive function to build the resulting path
-//
-// node: {...} // current dom-node
-// path: ""
-function getCompaundPath( node ) {
-  //console.log("<node.tagName:"+node.tagName+">");
-  var path = "";
-  analizeTag(node);
+  
   if (node.tagName == "path") {
     path = node.getAttribute('d');
   } else {
     _.forEach(node.childNodes, function(child) {
       //console.log(child.tagName);
-      path += getCompaundPath( child );
+      path += getCompoundPath( child );
     });  	
   }
 
