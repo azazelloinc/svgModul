@@ -2,6 +2,10 @@ svgconvert.js - модуль преобразования SVG-файла
 import_svg_image.js - измененная процедура import_svg_image с использованием нового модуля
 index.js - для тестирования модуля svgconvert
 
+Папки:
+svgfilesin - исходные svg-файлы
+svgfilesout - преобразованные svg-файлы
+
 Тестировать можно в командной строке:
 node index.js
  - выдается нумерованный список svg файлов из папки svgfilesin
@@ -14,6 +18,10 @@ node index.js <номер из списка>
 svgconvert.js - SVG-file conversion module 
 import_svg_image.js - import_svg_image modified procedure using the new module 
 index.js - test module svgconvert 
+
+Folders: 
+svgfilesin - source svg-files 
+svgfilesout - converted svg-files
 
 You can test in command line: 
 
