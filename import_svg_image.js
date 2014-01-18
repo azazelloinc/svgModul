@@ -6,7 +6,6 @@ var svgconv = require("./svgconvert");
 // data - text content
 //
 function import_svg_image(data, file) {
-//  var xmlDoc = (new XMLDOMParser()).parseFromString(data, 'application/xml');
   var svgResult = svgconv.normalizeSvg(data);
   
   var customIcons = N.app.fontsList.getFont('custom_icons');
@@ -18,38 +17,12 @@ function import_svg_image(data, file) {
   }).charRef;
 
   var allocatedRefCode = (!maxRef) ? 0xe800 : utils.fixedCharCodeAt(maxRef) + 1;
-//  var svgTag = xmlDoc.getElementsByTagName('svg')[0];
-//  var pathTags = xmlDoc.getElementsByTagName('path');
-
-//  if (pathTags.length !== 1) {
-//    N.wire.emit('notify', t('error.bad_svg_image', { name: file.name }));
-//  }
 
   if (!svgResult.ok) {
+    //... assembly error message
     N.wire.emit('notify', t('error.bad_svg_image', { name: file.name }));
   }
   
-//  var d = pathTags[0].getAttribute('d');
-
-//  // getting viewBox values array
-//  var viewBox = _.map(
-//    (svgTag.getAttribute('viewBox') || '').split(' '),
-//    function(val) { return parseInt(val, 10); }
-//  );
-
-  // getting base parameters
-
-//  var attr = {};
-//  
-//  _.forEach(['x', 'y', 'width', 'height'], function(key) {
-//    attr[key] = parseInt(svgTag.getAttribute(key), 10);
-//  });
-//
-//  var x      = viewBox[0] || attr.x || 0;
-//  var y      = viewBox[1] || attr.y || 0;
-//  var width  = viewBox[2] || attr.width;
-//  var height = viewBox[3] || attr.height;
-
   // Scale to standard grid
   var scale  = 1000 / svgResult.height;
   var d = new SvgPath(svgResult.path)
